@@ -4,6 +4,7 @@ import brownie from "./brownie.png";
 import minerva1 from "./mini1.png";
 import "./App.css";
 import bgmusic from "./bgmusic.mp3";
+import startbutton from "./start.png";
 // import dead from "./dead.mp3";
 
 function App() {
@@ -13,13 +14,36 @@ function App() {
 
   useEffect(() => {
 
-    const game = kaboom({ background: [74, 48, 82] });
+    const game = kaboom({ background: [252, 186, 3] });
     gameRef.current = game;
     game.loadSprite("minerva", minerva1);
     game.loadSprite("brownie", brownie);
+    game.loadSprite("startButton", startbutton);
     game.loadSound("bgmusic", bgmusic);
     // game.loadSound("dead", dead);
     const music = game.play("bgmusic");
+
+
+    game.scene("story", ()=> {
+      
+      game.add([
+        game.text("Once upon a time in Kasol,\nMinverva got ambushed by some sneaky brownies.\nNow, it's up to us\nto save her\nfrom these little dessert delinquents!\n\nPress any button to start the game"),
+        game.pos(game.width()/2, game.height()/2),
+        // game.scale(1),
+        game.anchor("center"),
+      ]);
+
+      const start = game.add([
+        game.sprite("startButton"),
+        game.scale(0.2),
+        game.pos(game.width()-400, game.height()-200),
+      ]);
+
+      // start.onClick(()=> game.go("game"));
+
+      game.onKeyPress("space", () => game.go("game"));
+      game.onClick(() => game.go("game"));
+    });
 
     game.scene("game", () => {
       
@@ -153,7 +177,7 @@ function App() {
       game.onClick(() => game.go("game"));
     });
 
-    game.onLoad(()=>game.go("game"));
+    game.onLoad(()=>game.go("story"));
   }, []);
 
   return (
