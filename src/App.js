@@ -5,6 +5,7 @@ import minerva1 from "./mini1.png";
 import "./App.css";
 import bgmusic from "./bgmusic.mp3";
 import startbutton from "./start.png";
+import deadMini from "./deadMini.png";
 // import dead from "./dead.mp3";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
     const game = kaboom({ background: [252, 186, 3] });
     gameRef.current = game;
     game.loadSprite("minerva", minerva1);
+    game.loadSprite("deadMini", deadMini);
     game.loadSprite("brownie", brownie);
     game.loadSprite("startButton", startbutton);
     game.loadSound("bgmusic", bgmusic);
@@ -38,8 +40,6 @@ function App() {
         game.scale(0.2),
         game.pos(game.width()-400, game.height()-200),
       ]);
-
-      // start.onClick(()=> game.go("game"));
 
       game.onKeyPress("space", () => game.go("game"));
       game.onClick(() => game.go("game"));
@@ -153,22 +153,22 @@ function App() {
     game.scene("lose", (text) => {
       // const die = game.play(dead);
       game.add([
-        game.sprite("minerva"),
+        game.sprite("deadMini"),
         game.pos(game.width() / 2, game.height() / 2 - 108),
         game.scale(0.5),
         game.anchor("center"),
       ]);
 
       game.add([
-        game.text(text),
+        game.text("\n\n"+text+"\n"),
         game.pos(game.width() / 2, game.height() / 3 + 108),
-        game.scale(3),
+        game.scale(2),
         game.anchor("center"),
       ]);
 
       game.add([
         game.text("Press any button to restart."),
-        game.pos(game.width() / 2, game.height() / 2.5 + 108),
+        game.pos(game.width() / 2, game.height() / 2 + 108),
         game.scale(1),
         game.anchor("center"),
       ]);
