@@ -172,7 +172,6 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Bhaag Minerva Bhaag</h1>
     </div>
   );
 }
