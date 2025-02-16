@@ -12,16 +12,19 @@ function App() {
   const gameRef = useRef(null);
 
   useEffect(() => {
+
     const game = kaboom({ background: [252, 186, 3] });
     gameRef.current = game;
     game.loadSprite("minerva", minerva1);
     game.loadSprite("deadMini", deadMini);
     game.loadSprite("brownie", brownie);
     game.loadSprite("startButton", startbutton);
-    game.loadSound("bgmusic", bgmusic);
-    game.play("bgmusic");
+    const bg = game.loadSound("bgmusic", bgmusic);
+
 
     game.scene("story", () => {
+      
+      game.play("bgmusic");
       game.add([
         game.text(
           "Once upon a time in Kasol,\nMinverva got ambushed by some sneaky brownies.\nNow, it's up to us\nto save her\nfrom these little dessert delinquents!\n\nPress any button to start the game"
@@ -41,6 +44,7 @@ function App() {
     });
 
     game.scene("game", () => {
+      game.play("bgmusic");
       function addExplode(p, n, rad, size) {
         for (let i = 0; i < n; i++) {
           game.wait(game.rand(n * 0.1), () => {
@@ -142,6 +146,7 @@ function App() {
     });
 
     game.scene("lose", (text) => {
+      game.play("bgmusic");
       game.add([
         game.sprite(text == "Bch gyi!" ? "minerva" : "deadMini"),
         game.pos(game.width() / 2, game.height() / 2 - 108),
