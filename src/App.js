@@ -5,6 +5,7 @@ import bgmusic from "./bgmusic.mp3";
 import brownie from "./brownie.png";
 import startbutton from "./start.png";
 import deadMini from "./deadMini.png";
+import dead from "./dead.mp3";
 
 function App() {
   const PLAYER_SPEED = 480;
@@ -20,11 +21,12 @@ function App() {
     game.loadSprite("brownie", brownie);
     game.loadSprite("startButton", startbutton);
     const bg = game.loadSound("bgmusic", bgmusic);
+    game.loadSound("dead", bgmusic);
 
 
     game.scene("story", () => {
       
-      game.play("bgmusic");
+      const music = game.play("bgmusic");
       game.add([
         game.text(
           "Once upon a time in Kasol,\nMinverva got ambushed by some sneaky brownies.\nNow, it's up to us\nto save her\nfrom these little dessert delinquents!\n\nPress any button to start the game"
@@ -39,12 +41,16 @@ function App() {
         game.pos(game.width() - 400, game.height() - 200),
       ]);
 
-      game.onKeyPress("space", () => game.go("game"));
-      game.onClick(() => game.go("game"));
+      game.onKeyPress("space", () => { 
+        music.stop();
+        game.go("game")});
+
+      game.onClick(() => { music.stop(); game.go("game")});
     });
 
     game.scene("game", () => {
-      game.play("bgmusic");
+
+      const music = game.play("bgmusic");
       function addExplode(p, n, rad, size) {
         for (let i = 0; i < n; i++) {
           game.wait(game.rand(n * 0.1), () => {
@@ -114,6 +120,8 @@ function App() {
       ]);
 
       mini.onCollide("enemy", (e) => {
+        music.stop();
+        const deadMusic = game.play("dead");
         addExplode(game.center(), 12, 120, 30);
         game.destroy(e);
         game.shake(120);
@@ -146,7 +154,8 @@ function App() {
     });
 
     game.scene("lose", (text) => {
-      game.play("bgmusic");
+
+      const music = game.play("bgmusic");
       game.add([
         game.sprite(text == "Bch gyi!" ? "minerva" : "deadMini"),
         game.pos(game.width() / 2, game.height() / 2 - 108),
@@ -168,7 +177,7 @@ function App() {
         game.anchor("center"),
       ]);
 
-      game.onKeyPress("space", () => game.go("game"));
+      game.onKeyPress("space", () => { music.stop(); game.go("game") });
       game.onClick(() => game.go("game"));
     });
 
